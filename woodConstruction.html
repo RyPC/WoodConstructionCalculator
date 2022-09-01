@@ -16,15 +16,17 @@
         <div class="column" id="column2">
             <h2>Modify</h2>
             <div class="row">
-                <input autocomplete="off" id="d1" type="number" oninput="checkNum('d1')" autofocus/> in. x
+                <input autocomplete="off" id="d1" type="number" oninput="checkNum('d1')" autofocus /> in. x
                 <input autocomplete="off" id="d2" type="number" oninput="checkNum('d2')" /> in. x
                 <input autocomplete="off" id="d3" type="number" oninput="checkNum('d3')" /> in.
             </div>
             <input autocomplete="off" id="quantity" type="number" min="1" placeholder="quantity" /><br />
             <button onclick="add()">add</button>
             <button onclick="cut()">cut</button>
-            <button onclick="remove()">remove</button>
+            <!--<button onclick="remove()">remove</button>-->
             <p id="notification">hey</p>
+            <h2>Bought Wood</h2>
+            <ul id="bought"></ul>
 
         </div>
         <div class="column" id="column3">

@@ -1,5 +1,6 @@
 ﻿var cutWood = [];
 var uncutWood = [];
+var boughtWood = [];
 var interval;
 
 //add uncut wood with given dimensions to list
@@ -29,6 +30,17 @@ function add() {
         uncutWood.push(ds);
     }
 
+    //search through bought wood list for other wood with the same dimensions
+    var found = boughtWood.find(wood => {
+        if (wood[1] == ds[1] && wood[2] == ds[2] && wood[3] == ds[3]) {
+            wood[0] += q;
+            return true;
+        }
+        return false;
+    }, boughtWood);
+    if (typeof found === "undefined") {
+        boughtWood[boughtWood.length] = ds.slice();
+    }
 
     createNotification(`${ds[0]} - ${ds[1]}x${ds[2]}x${ds[3]} added`);
 
@@ -87,13 +99,14 @@ function cut() {
     var d3 = parseFloat(document.getElementById("d3").value);
     var q = parseFloat(document.getElementById("quantity").value);
     var ds = [d1, d2, d3].sort((a, b) => a - b);
-    ds.unshift(1);
+    ds.unshift(q);
 
     //check for all entered inputs
     if (containsNaN(ds)) {
         createNotification("Please make sure all fields are filled out");
         return;
     }
+    ds[0] = 1;
     var numCut = 0;
     while (q > 0) {
         //filter by wood containing both smallest values
@@ -168,19 +181,21 @@ function updateLists() {
     uncutWood.forEach(wood => {
         html += `<li>${wood[0]} - ${wood[1]}x${wood[2]}x${wood[3]}</li>`;
     });
-
-
     document.getElementById("uncut").innerHTML = html;
-
 
     //update cut wood list
     html = "";
     cutWood.forEach(wood => {
         html += `<li>${wood[0]} - ${wood[1]}x${wood[2]}x${wood[3]}</li>`;
     });
-
-
     document.getElementById("cut").innerHTML = html;
+
+    //update bought wood list
+    var html = "";
+    boughtWood.forEach(wood => {
+        html += `<li>${wood[0]} - ${wood[1]}x${wood[2]}x${wood[3]}</li>`;
+    });
+    document.getElementById("bought").innerHTML = html;
 
 }
 
@@ -194,7 +209,7 @@ function checkNum(id) {
 
 //check if the given list contains any NaN values
 function containsNaN(list) {
-    return typeof list.find(x => isNaN(x)) !== "undefined";
+    return typeof list.find(x => isNaN(x) || x === "") !== "undefined";
 }
 
 //clears the input boxes for next piece
